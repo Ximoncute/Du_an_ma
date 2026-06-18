@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartHome - IoT Dashboard</title>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Welcome IP Connection Overlay Lock -->
+  <div class="ip-lock-overlay" id="ipLockOverlay">
+    <div class="ip-lock-card">
+      <div class="ip-lock-logo" id="ipLockLogo">
+        <i class="fa-solid fa-microchip"></i>
+      </div>
+      
+      <!-- Content form -->
+      <div class="ip-lock-info" id="ipLockInfoBlock">
+        <h2>Kết nối thiết bị ESP32</h2>
+        <p>Hệ thống đang ở trạng thái khóa. Vui lòng nhập địa chỉ IP của thiết bị ESP32 để kết nối và tải toàn bộ dữ liệu.</p>
+      </div>
+
+      <div class="ip-lock-form" id="ipLockFormBlock">
+        <div class="ip-lock-input-group">
+          <label class="ip-lock-label" for="ipLockInput">ĐỊA CHỈ IP ESP32</label>
+          <input type="text" class="ip-lock-input" id="ipLockInput" value="192.168.1.100" placeholder="ví dụ: 192.168.1.100">
+        </div>
+        <button class="btn-ip-connect" id="btnIpConnect">
+          <i class="fa-solid fa-link"></i>
+          Kết nối thiết bị
+        </button>
+        <div class="ip-lock-error" id="ipLockError">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span>Địa chỉ IP không hợp lệ hoặc thiết bị offline!</span>
+        </div>
+      </div>
+
+      <!-- Loading spinner -->
+      <div class="spinner-container" id="ipLockSpinnerContainer">
+        <div class="connect-spinner"></div>
+        <span class="connect-spinnerText" id="ipLockSpinnerText">Đang kết nối tới thiết bị...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-header">
+          <div class="logo-icon">
+            <i class="fa-solid fa-microchip"></i>
+          </div>
+          <div class="logo-info">
+            <span class="logo-title">SmartHome</span>
+            <span class="logo-subtitle">IoT Dashboard</span>
+          </div>
+        </div>
+        
+        <ul class="sidebar-menu">
+          <li class="menu-item active" data-tab="dashboard">
+            <a href="#dashboard">
+              <i class="fa-solid fa-chart-line"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="menu-item" data-tab="devices">
+            <a href="#devices">
+              <i class="fa-solid fa-toggle-on"></i>
+              <span>Thiết bị</span>
+            </a>
+          </li>
+          <li class="menu-item" data-tab="settings">
+            <a href="#settings">
+              <i class="fa-solid fa-sliders"></i>
+              <span>Cài đặt</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="sidebar-footer">
+        <div class="connection-status">
+          <div class="status-dot pulse" id="connectionDot"></div>
+          <div class="status-info">
+            <span class="status-text" id="connectionText">Đã kết nối</span>
+            <span class="status-ip" id="connectionIp">192.168.1.100</span>
+          </div>
+        </div>
+        
+        <button class="sidebar-collapse-btn" id="collapseSidebarBtn" title="Thu gọn menu">
+          <i class="fa-solid fa-angle-left"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="main-content" id="mainWorkspace">
+      
+      <!-- Tab 1: Dashboard -->
+      <section class="tab-content active" id="tab-dashboard">
+        
+        <!-- Header -->
+        <header class="dashboard-header">
+          <div class="header-info">
+            <h1 id="dashboardTitle">Dashboard</h1>
+            <p>Tổng quan hệ thống nhà thông minh của bạn</p>
+          </div>
+          
+          <div class="header-status">
+            <div class="pill-status online">
+              <div class="status-dot pulse"></div>
+              <span id="headerOnlineCount">2/2 thiết bị online</span>
+            </div>
+            <div class="header-date" id="currentDateDisplay">Thứ Năm, 18 tháng 6, 2026</div>
+          </div>
+        </header>
+
+        <!-- Metric Summary Cards -->
+        <div class="metrics-grid">
+          
+          <!-- Card 1: Devices Online -->
+          <div class="metric-card" id="card-devices">
+            <div class="metric-card-header">
+              <div class="metric-icon-box green">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <span class="metric-title">Thiết bị online</span>
+            </div>
+            <div class="metric-value-container">
+              <span class="metric-value" id="val-online">2</span>
+              <span class="metric-unit" id="val-total">/2</span>
+            </div>
+            <span class="metric-footer">Kết nối ổn định</span>
+          </div>
+
+          <!-- Card 2: Temperature -->
+          <div class="metric-card" id="card-temperature">
+            <div class="metric-card-header">
+              <div class="metric-icon-box orange">
+                <i class="fa-solid fa-temperature-half"></i>
+              </div>
+              <span class="metric-title">Nhiệt độ TB</span>
+            </div>
+            <div class="metric-value-container">
+              <span class="metric-value" id="val-temp">28.5</span>
+              <span class="metric-unit">°C</span>
+            </div>
+            <span class="metric-footer">Phòng khách</span>
+          </div>
+
+          <!-- Card 3: Humidity -->
+          <div class="metric-card" id="card-humidity">
+            <div class="metric-card-header">
+              <div class="metric-icon-box blue">
+                <i class="fa-solid fa-droplet"></i>
+              </div>
+              <span class="metric-title">Độ ẩm</span>
+            </div>
+            <div class="metric-value-container">
+              <span class="metric-value" id="val-humidity">72</span>
+              <span class="metric-unit">%</span>
+            </div>
+            <span class="metric-footer">Phòng khách</span>
+          </div>
+
+          <!-- Card 4: Light -->
+          <div class="metric-card" id="card-light">
+            <div class="metric-card-header">
+              <div class="metric-icon-box yellow">
+                <i class="fa-solid fa-sun"></i>
+              </div>
+              <span class="metric-title">Ánh sáng</span>
+            </div>
+            <div class="metric-value-container">
+              <span class="metric-value" id="val-light">450</span>
+              <span class="metric-unit">lux</span>
+            </div>
+            <span class="metric-footer">Độ sáng hiện tại</span>
+          </div>
+
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="charts-grid">
+          
+          <!-- Temp Chart -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <div class="chart-title-box">
+                <div class="chart-icon-dot green"></div>
+                <span class="chart-title">Nhiệt độ</span>
+              </div>
+              <span class="chart-current-val" id="chart-val-temp">28.5 °C</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="tempChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Humidity Chart -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <div class="chart-title-box">
+                <div class="chart-icon-dot blue"></div>
+                <span class="chart-title">Độ ẩm</span>
+              </div>
+              <span class="chart-current-val" id="chart-val-humidity">72 %</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="humidChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Light Chart -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <div class="chart-title-box">
+                <div class="chart-icon-dot orange"></div>
+                <span class="chart-title">Ánh sáng</span>
+              </div>
+              <span class="chart-current-val" id="chart-val-light">450 lux</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="lightChart"></canvas>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Quick Controls -->
+        <div class="quick-controls-card">
+          <div class="controls-header">
+            <i class="fa-solid fa-bolt"></i>
+            <span class="controls-title">Điều khiển nhanh</span>
+          </div>
+          <div class="controls-btn-row">
+            <button class="btn-control active-all" id="btnQuickAllOn">
+              <i class="fa-solid fa-sun"></i>
+              Bật tất cả đèn
+            </button>
+            <button class="btn-control" id="btnQuickAllOff">
+              <i class="fa-solid fa-moon"></i>
+              Tắt tất cả đèn
+            </button>
+            <button class="btn-control" id="btnQuickAway">
+              <i class="fa-solid fa-house-laptop"></i>
+              Chế độ vắng nhà
+            </button>
+            <button class="btn-control" id="btnQuickNight">
+              <i class="fa-solid fa-bed"></i>
+              Ban đêm (23h-5h)
+            </button>
+            <button class="btn-control refresh-btn" id="btnQuickRefresh">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              <span>Làm mới dữ liệu</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Devices Section Header & Switch Grid -->
+        <div class="devices-section-header">
+          <span class="devices-section-title">Thiết bị điều khiển</span>
+          <ul class="filter-tabs" id="deviceFilters">
+            <li class="filter-tab active" data-filter="all">Tất cả</li>
+            <li class="filter-tab" data-filter="online">Online</li>
+            <li class="filter-tab" data-filter="warning">Cảnh báo</li>
+          </ul>
+        </div>
+
+        <!-- Devices Grid -->
+        <div class="devices-grid" id="devicesGrid">
+          
+          <!-- Device 1: Smart Light -->
+          <div class="device-card active" data-device-id="light_living" data-status="online">
+            <div class="device-info-row">
+              <div class="device-icon-wrapper">
+                <i class="fa-solid fa-lightbulb"></i>
+              </div>
+              <div class="device-details">
+                <span class="device-name">Đèn thông minh</span>
+                <span class="device-room">Phòng khách</span>
+              </div>
+            </div>
+            <span class="device-status-badge">Online</span>
+            
+            <div class="device-control-row">
+              <div class="device-state-desc">
+                <span class="state-title" id="state-title-light_living">Đang bật</span>
+                <span class="state-time" id="state-time-light_living">10 giây trước</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggle-light_living" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Device 2: Smart Door -->
+          <div class="device-card" data-device-id="door_hallway" data-status="online">
+            <div class="device-info-row">
+              <div class="device-icon-wrapper">
+                <i class="fa-solid fa-door-closed"></i>
+              </div>
+              <div class="device-details">
+                <span class="device-name">Cửa thông minh</span>
+                <span class="device-room">Hành lang</span>
+              </div>
+            </div>
+            <span class="device-status-badge">Online</span>
+            
+            <div class="device-control-row">
+              <div class="device-state-desc">
+                <span class="state-title" id="state-title-door_hallway">Đã đóng</span>
+                <span class="state-time" id="state-time-door_hallway">30 phút trước</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggle-door_hallway">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Serial Monitor -->
+        <div class="serial-monitor-card">
+          <div class="serial-header">
+            <div class="serial-title-box">
+              <i class="fa-solid fa-terminal"></i>
+              <span class="serial-title-text">Serial Monitor — Lệnh từ thiết bị</span>
+              <span class="serial-subtitle" id="serialSubtext">Chưa kết nối — nhấn nút để bắt đầu</span>
+            </div>
+            <button class="btn-serial-connect" id="btnSerialConnect">
+              <div class="connect-dot"></div>
+              <span>Kết nối</span>
+            </button>
+          </div>
+
+          <div class="serial-terminal" id="serialTerminal">
+            <div class="terminal-line">
+              <span class="terminal-time">[--:--:--]</span>
+              <span class="terminal-msg">Đang chờ dữ liệu từ thiết bị...</span>
+              <span class="terminal-cursor" id="terminalCursor"></span>
+            </div>
+          </div>
+
+          <div class="serial-input-row">
+            <input type="text" class="serial-input" id="serialInput" placeholder="Nhập nội dung muốn hiển thị lên thiết bị..." disabled>
+            <button class="btn-serial-send" id="btnSerialSend" disabled>
+              <i class="fa-solid fa-paper-plane"></i>
+              Gửi lên thiết bị
+            </button>
+          </div>
+          <div class="serial-warning">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            Cảnh báo: Nội dung bạn nhập sẽ hiển thị trực tiếp lên màn hình của thiết bị IoT!
+          </div>
+        </div>
+
+      </section>
+      
+      <!-- Tab 2: Devices (Manage) -->
+      <section class="tab-content" id="tab-devices">
+        <header class="dashboard-header">
+          <div class="header-info">
+            <h1>Thiết bị SmartHome</h1>
+            <p>Danh sách chi tiết và quản lý các cổng camera giám sát, cảm biến môi trường</p>
+          </div>
+        </header>
+        
+        <div class="devices-grid">
+          
+          <!-- Device: Camera Live Stream (Moved here) -->
+          <div class="device-card" data-device-id="camera_living" data-status="online">
+            <div class="device-info-row">
+              <div class="device-icon-wrapper" style="background-color: var(--brand-green-bg); color: var(--brand-green);">
+                <i class="fa-solid fa-video"></i>
+              </div>
+              <div class="device-details">
+                <span class="device-name">Camera giám sát</span>
+                <span class="device-room">Phòng khách</span>
+              </div>
+            </div>
+            <span class="device-status-badge">Online</span>
+            
+            <div class="device-control-row">
+              <div class="device-state-desc">
+                <span class="state-title">Đang truyền</span>
+                <span class="state-time">Thời gian thực (720p)</span>
+              </div>
+              <button class="btn-action-card" id="btnOpenStream">
+                <i class="fa-solid fa-play"></i> Xem Live
+              </button>
+            </div>
+          </div>
+
+          <!-- Device: ESP32 Central Controller Node -->
+          <div class="device-card" data-device-id="esp32_node" data-status="online">
+            <div class="device-info-row">
+              <div class="device-icon-wrapper" style="background-color: var(--active-blue-bg); color: var(--active-blue);">
+                <i class="fa-solid fa-microchip"></i>
+              </div>
+              <div class="device-details">
+                <span class="device-name">ESP32 Gateway Node</span>
+                <span class="device-room">Phòng kỹ thuật</span>
+              </div>
+            </div>
+            <span class="device-status-badge">Online</span>
+            
+            <div class="device-control-row">
+              <div class="device-state-desc">
+                <span class="state-title" id="state-title-esp32">Băng tần 2.4GHz</span>
+                <span class="state-time">IP: 192.168.1.100</span>
+              </div>
+              <button class="btn-action-card" onclick="alert('Đang gửi lệnh Ping tới ESP32...')" style="font-weight: 500;">
+                <i class="fa-solid fa-wifi"></i> Ping Node
+              </button>
+            </div>
+          </div>
+
+          <!-- Device: Ambient Sensor -->
+          <div class="device-card" data-device-id="dht11_node" data-status="online">
+            <div class="device-info-row">
+              <div class="device-icon-wrapper" style="background-color: var(--orange-accent-bg); color: var(--orange-accent);">
+                <i class="fa-solid fa-wind"></i>
+              </div>
+              <div class="device-details">
+                <span class="device-name">Cảm biến DHT11</span>
+                <span class="device-room">Phòng khách</span>
+              </div>
+            </div>
+            <span class="device-status-badge">Online</span>
+            
+            <div class="device-control-row">
+              <div class="device-state-desc">
+                <span class="state-title">Nhiệt độ & Độ ẩm</span>
+                <span class="state-time">Thời gian thực</span>
+              </div>
+              <button class="btn-action-card" onclick="alert('Dữ liệu DHT11 đang được cập nhật tự động lên đồ thị.')" style="font-weight: 500;">
+                <i class="fa-solid fa-clock-rotate-left"></i> Lịch sử
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- IP Node Registry Card -->
+        <div class="ip-registry-card">
+          <div class="registry-header">
+            <div class="registry-title-box">
+              <i class="fa-solid fa-circle-nodes"></i>
+              <span class="registry-title">Danh sách IP Nodes kết nối</span>
+            </div>
+            <button class="btn-add-node" id="btnAddNode" title="Thêm địa chỉ IP mới">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+
+          <!-- Inline form for adding node -->
+          <div class="add-node-form-container" id="addNodeFormContainer">
+            <div class="add-node-form">
+              <input type="text" class="newNodeIpInput" id="newNodeIpInput" placeholder="Nhập địa chỉ IP, ví dụ: 192.168.1.105" style="background-color: white; border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-md); font-family: monospace; font-size: 0.9rem; flex-grow: 1; outline: none;">
+              <button class="btn-control refresh-btn" id="btnSubmitNewNode" style="margin-left: 0; padding: 10px 20px;">
+                <i class="fa-solid fa-check"></i> Lưu Node
+              </button>
+              <button class="btn-control" id="btnCancelAddNode" style="margin-left: 0; padding: 10px 20px; background-color: #e2e8f0; color: var(--text-muted);">
+                Hủy
+              </button>
+            </div>
+          </div>
+
+          <!-- Node List -->
+          <ul class="node-list" id="registeredNodeList">
+            <!-- Dynamically populated -->
+          </ul>
+        </div>
+      </section>
+
+      <!-- Tab 3: Settings -->
+      <section class="tab-content" id="tab-settings">
+        <header class="dashboard-header">
+          <div class="header-info">
+            <h1>Cài đặt hệ thống</h1>
+            <p>Cấu hình thông số mạng, ngưỡng cảnh báo và tài khoản của bạn</p>
+          </div>
+        </header>
+        
+        <div class="settings-content-wrapper">
+          
+          <div class="settings-group">
+            <span class="settings-label">Địa chỉ IP của Gateway IoT</span>
+            <span class="settings-description">Cấu hình IP máy chủ WebSocket kết nối trực tiếp với ESP32/Arduino.</span>
+            <div class="settings-input-group">
+              <input type="text" class="serial-input" value="192.168.1.100" style="max-width: 300px;">
+              <button class="btn-control refresh-btn" style="margin-left: 0; padding: 10px 20px;">Lưu địa chỉ</button>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <span class="settings-label">Ngưỡng cảnh báo nhiệt độ</span>
+            <span class="settings-description">Hệ thống sẽ gửi cảnh báo nếu nhiệt độ vượt quá ngưỡng này.</span>
+            <div class="settings-input-group">
+              <input type="number" class="serial-input" value="38" style="max-width: 120px;">
+              <span style="align-self: center; font-weight: 500;">°C</span>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <span class="settings-label">Chế độ hiển thị Camera</span>
+            <span class="settings-description">Lựa chọn chất lượng hiển thị và nguồn truyền trực tiếp của camera.</span>
+            <div class="settings-input-group">
+              <select class="serial-input" style="max-width: 300px; padding-right: 24px;">
+                <option value="dynamic">Vẽ giả lập thời gian thực (Mượt mà)</option>
+                <option value="mjpeg">Luồng HTTP MJPEG (ESP32-CAM)</option>
+                <option value="hls">Luồng RTSP/HLS (IP Camera)</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Premium Live Camera Stream Overlay Modal -->
+  <div class="camera-modal" id="cameraModal">
+    <div class="camera-modal-content">
+      
+      <div class="camera-modal-header">
+        <div class="camera-modal-title">
+          <i class="fa-solid fa-circle-dot status-dot pulse"></i>
+          <span id="cameraModalName">Camera giám sát — Phòng khách</span>
+        </div>
+        <button class="btn-close-modal" id="btnCloseModal" title="Đóng camera">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="camera-stream-wrapper">
+        <canvas class="camera-canvas" id="cameraCanvas"></canvas>
+        
+        <!-- Camera control overlay -->
+        <div class="camera-controls-overlay">
+          <button class="cam-ctrl-btn" id="btnCamLeft" title="Quay sang trái">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <button class="cam-ctrl-btn" id="btnCamRight" title="Quay sang phải">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+          <button class="cam-ctrl-btn" id="btnCamZoomIn" title="Phóng to">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+          </button>
+          <button class="cam-ctrl-btn" id="btnCamZoomOut" title="Thu nhỏ">
+            <i class="fa-solid fa-magnifying-glass-minus"></i>
+          </button>
+          <button class="cam-ctrl-btn" id="btnCamSnapshot" title="Chụp màn hình">
+            <i class="fa-solid fa-camera"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="camera-modal-footer">
+        <div class="cam-meta-item">
+          <i class="fa-solid fa-signal" style="color: var(--brand-green-accent);"></i>
+          <span>Tín hiệu: Rất tốt (84ms)</span>
+        </div>
+        <div class="cam-meta-item">
+          <i class="fa-solid fa-expand"></i>
+          <span>Độ phân giải: 1280x720 (720p)</span>
+        </div>
+        <div class="cam-meta-item">
+          <i class="fa-solid fa-bolt"></i>
+          <span id="cameraFps">30 FPS</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Main JavaScript File -->
+  <script src="app.js"></script>
+</body>
+</html>
