@@ -31,6 +31,18 @@ export const sidebarTemplate = `
             <span>Cài đặt</span>
           </a>
         </li>
+        <li class="menu-item" data-tab="profile">
+          <a href="#profile">
+            <i class="fa-solid fa-user-gear"></i>
+            <span>Thông tin cá nhân</span>
+          </a>
+        </li>
+        <li class="menu-item" data-tab="support">
+          <a href="#support">
+            <i class="fa-solid fa-headset"></i>
+            <span>Tư vấn hỗ trợ</span>
+          </a>
+        </li>
       </ul>
     </div>
     

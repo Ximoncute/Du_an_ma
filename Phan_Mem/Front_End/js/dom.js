@@ -100,4 +100,18 @@ export function initDomSelectors() {
   el.settingsTempThreshold = $('settingsTempThreshold');
   el.settingsLightThreshold = $('settingsLightThreshold');
   el.settingsCameraMode = $('settingsCameraMode');
+
+  // Profile selectors
+  el.profileAvatarInput = $('profileAvatarInput');
+  el.profileAvatarPreview = $('profileAvatarPreview');
+  el.profileFullName = $('profileFullName');
+  el.profileDob = $('profileDob');
+  el.profilePhone = $('profilePhone');
+  el.profileEmail = $('profileEmail');
+  el.btnSaveProfile = $('btnSaveProfile');
+
+  // Support selectors
+  el.supportChatMessages = $('supportChatMessages');
+  el.supportChatInput = $('supportChatInput');
+  el.supportBtnSend = $('supportBtnSend');
 }
