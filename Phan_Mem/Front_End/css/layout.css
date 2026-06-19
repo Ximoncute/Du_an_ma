@@ -1,0 +1,89 @@
+.app-container { display: flex; min-height: 100vh; position: relative; }
+
+/* Main Workspace layout */
+.main-content {
+  flex-grow: 1;
+  margin-left: var(--sidebar-width);
+  padding: 32px;
+  transition: margin-left var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 1600px;
+  width: calc(100% - var(--sidebar-width));
+}
+
+/* Header Styling */
+.dashboard-header { display: flex; justify-content: space-between; align-items: flex-start; }
+
+.header-info h1 {
+  font-size: 1.85rem;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.header-info p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.header-status { display: flex; align-items: center; gap: 16px; }
+
+.pill-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f1f5f9;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.pill-status.online {
+  background-color: var(--brand-green-bg);
+  color: var(--brand-green);
+}
+
+.pill-status.online .status-dot {
+  background-color: var(--brand-green-accent);
+}
+
+.header-date {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Tablet responsive styles */
+@media (max-width: 1024px) {
+  .main-content {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+    padding: 24px;
+  }
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+  
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 16px;
+    gap: 20px;
+  }
+  
+  .dashboard-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .header-status {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

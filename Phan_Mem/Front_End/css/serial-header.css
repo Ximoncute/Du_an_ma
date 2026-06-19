@@ -1,0 +1,65 @@
+/* css/serial-header.css */
+.serial-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.serial-title-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.serial-title-box i {
+  color: var(--brand-green);
+  font-size: 1.1rem;
+}
+
+.serial-title-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.serial-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-left: 6px;
+}
+
+.btn-serial-connect {
+  background-color: #f1f5f9;
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+}
+
+.btn-serial-connect:hover {
+  background-color: #e2e8f0;
+}
+
+.btn-serial-connect.connected {
+  background-color: var(--brand-green-bg);
+  border-color: var(--brand-green-hover);
+  color: var(--brand-green);
+}
+
+.btn-serial-connect .connect-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--text-muted);
+  border-radius: 50%;
+}
+
+.btn-serial-connect.connected .connect-dot {
+  background-color: var(--brand-green-accent);
+}

@@ -1,0 +1,77 @@
+/* css/serial-input.css */
+.terminal-cursor {
+  display: inline-block;
+  width: 6px;
+  height: 14px;
+  background-color: var(--brand-green-accent);
+  animation: blink 1s infinite step-end;
+  margin-left: 2px;
+  vertical-align: middle;
+}
+
+@keyframes blink {
+  from, to { background-color: transparent }
+  50% { background-color: var(--brand-green-accent) }
+}
+
+.serial-input-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.serial-input {
+  flex-grow: 1;
+  background-color: #f8fafc;
+  border: 1px solid var(--border-color);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.serial-input:focus {
+  border-color: #cbd5e1;
+}
+
+.btn-serial-send {
+  background-color: var(--yellow-accent);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--transition-fast);
+}
+
+.btn-serial-send:hover {
+  background-color: #c2410c;
+  box-shadow: var(--shadow-sm);
+}
+
+.serial-warning {
+  font-size: 0.78rem;
+  color: #c2410c;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .serial-input-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .btn-serial-send {
+    justify-content: center;
+  }
+}

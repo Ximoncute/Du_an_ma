@@ -1,0 +1,54 @@
+/* css/sidebar-footer.css */
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background-color: var(--brand-green-bg);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--brand-green-accent);
+  border-radius: 50%;
+  position: relative;
+  display: inline-block;
+}
+
+.status-dot.pulse::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--brand-green-accent);
+  transform: translate(-50%, -50%);
+  animation: pulse 1.8s infinite ease-in-out;
+  opacity: 0;
+}
+
+.status-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.status-text {
+  font-weight: 600;
+  color: var(--brand-green);
+}
+
+.status-ip {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}

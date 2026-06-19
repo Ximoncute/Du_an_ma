@@ -1,0 +1,69 @@
+/* css/sidebar-actions.css */
+/* Sidebar actions row - placing Logout and Collapse button side by side */
+.sidebar-footer-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+.btn-logout {
+  background: none;
+  border: 1px solid #fee2e2;
+  color: #ef4444;
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-grow: 1; /* Stretch to occupy remaining space */
+  transition: all var(--transition-fast);
+}
+
+.btn-logout:hover {
+  background-color: rgba(239, 68, 68, 0.08);
+  border-color: #fca5a5;
+}
+
+.sidebar-collapse-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  flex-shrink: 0; /* Keep fixed width */
+  transition: all var(--transition-fast);
+}
+
+.sidebar-collapse-btn:hover {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  border-color: #cbd5e1;
+}
+
+/* Collapsed layout overrides */
+.sidebar.collapsed .sidebar-footer-row {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar.collapsed .btn-logout span {
+  display: none;
+}
+
+.sidebar.collapsed .btn-logout {
+  padding: 10px;
+  border: none;
+  width: 40px;
+  height: 40px;
+}

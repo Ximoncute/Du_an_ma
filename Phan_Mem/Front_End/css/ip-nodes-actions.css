@@ -1,0 +1,52 @@
+/* css/ip-nodes-actions.css */
+.node-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-connect-node {
+  background-color: white;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  opacity: 0;
+}
+
+.node-item:hover .btn-connect-node {
+  opacity: 1;
+}
+
+.node-item.active .btn-connect-node {
+  display: none;
+}
+
+.btn-connect-node:hover {
+  background-color: var(--brand-green);
+  color: white;
+  border-color: var(--brand-green);
+}
+
+.btn-delete-node {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+}
+
+.btn-delete-node:hover {
+  color: var(--alert-red);
+  background-color: rgba(211, 47, 47, 0.1);
+}
+
+.node-item.active .btn-delete-node {
+  display: none;
+}

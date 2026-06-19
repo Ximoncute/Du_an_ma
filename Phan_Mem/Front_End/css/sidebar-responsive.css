@@ -1,0 +1,70 @@
+/* css/sidebar-responsive.css */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 80px;
+    padding: 24px 8px;
+  }
+  
+  .sidebar-header {
+    justify-content: center;
+    padding: 8px 0;
+  }
+  
+  .logo-info, .logo-subtitle, .logo-title, .status-info, .sidebar-collapse-btn {
+    display: none;
+  }
+  
+  .menu-item a {
+    justify-content: center;
+    padding: 12px;
+  }
+  
+  .menu-item a span {
+    display: none;
+  }
+  
+  .connection-status {
+    justify-content: center;
+    padding: 12px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    position: relative;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 16px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .sidebar-header {
+    margin-bottom: 0;
+    padding: 0;
+  }
+  
+  .logo-info {
+    display: flex;
+  }
+  
+  .sidebar-menu {
+    flex-direction: row;
+    gap: 4px;
+  }
+  
+  .menu-item a {
+    padding: 8px;
+  }
+  
+  .menu-item a span {
+    display: none;
+  }
+  
+  .connection-status, .sidebar-footer {
+    display: none;
+  }
+}

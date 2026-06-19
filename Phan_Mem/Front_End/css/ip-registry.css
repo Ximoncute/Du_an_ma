@@ -1,0 +1,81 @@
+/* css/ip-registry.css */
+/* IP Node Registry Card */
+.ip-registry-card {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  border: 1px solid var(--border-color-light);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  grid-column: span 3; /* Stretch full grid width in devices page */
+}
+
+.registry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.registry-title-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.registry-title-box i {
+  color: var(--brand-green);
+  font-size: 1.15rem;
+}
+
+.registry-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.btn-add-node {
+  width: 32px;
+  height: 32px;
+  background-color: var(--brand-green-bg);
+  color: var(--brand-green);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all var(--transition-fast);
+}
+
+.btn-add-node:hover {
+  background-color: var(--brand-green-hover);
+  transform: rotate(90deg);
+}
+
+/* Form block for adding new IP */
+.add-node-form-container {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.add-node-form-container.active {
+  max-height: 80px;
+}
+
+.add-node-form {
+  display: flex;
+  gap: 12px;
+  background-color: var(--bg-primary);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--border-color);
+  align-items: center;
+}
+
+.workspace-lock-mask {
+  display: none;
+}

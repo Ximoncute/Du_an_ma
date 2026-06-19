@@ -1,0 +1,11 @@
+/* css/tabs.css */
+/* Tab Content Visibility classes */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}

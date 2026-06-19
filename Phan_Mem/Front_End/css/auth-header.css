@@ -1,0 +1,17 @@
+/* css/auth-header.css */
+.auth-header {
+  margin-bottom: 24px;
+}
+
+.auth-header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--brand-green);
+  margin-bottom: 6px;
+}
+
+.auth-header-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}

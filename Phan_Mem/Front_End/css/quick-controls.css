@@ -1,0 +1,97 @@
+/* css/quick-controls.css */
+/* Quick Controls Panel */
+.quick-controls-card {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  border: 1px solid var(--border-color-light);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.controls-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.controls-header i {
+  color: var(--yellow-accent);
+  font-size: 1.1rem;
+}
+
+.controls-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.controls-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.btn-control {
+  background-color: #f1f5f9;
+  color: var(--text-main);
+  border: none;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--transition-fast);
+}
+
+.btn-control:hover {
+  background-color: #e2e8f0;
+  transform: translateY(-1px);
+}
+
+.btn-control:active {
+  transform: translateY(0);
+}
+
+.btn-control.active-all {
+  background-color: var(--orange-accent-bg);
+  color: var(--orange-accent);
+}
+
+.btn-control.active-all:hover {
+  background-color: #fef08a;
+}
+
+.btn-control.refresh-btn {
+  background-color: #d1fae5;
+  color: #065f46;
+  margin-left: auto;
+}
+
+.btn-control.refresh-btn:hover {
+  background-color: #a7f3d0;
+}
+
+.btn-control.refresh-btn i.spin {
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .controls-btn-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn-control.refresh-btn {
+    margin-left: 0;
+  }
+}

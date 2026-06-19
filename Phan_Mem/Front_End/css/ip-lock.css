@@ -1,0 +1,67 @@
+/* css/ip-lock.css */
+/* Welcome IP Connection Overlay Lock Backdrop & Card Frame */
+.ip-lock-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  opacity: 1;
+  transition: opacity var(--transition-normal);
+}
+
+.ip-lock-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ip-lock-card {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  width: 90%;
+  max-width: 460px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+}
+
+.ip-lock-logo {
+  width: 68px;
+  height: 68px;
+  background-color: var(--brand-green-bg);
+  color: var(--brand-green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.ip-lock-logo.connecting {
+  background-color: var(--active-blue-bg);
+  color: var(--active-blue);
+}
+
+.ip-lock-info h2 {
+  font-size: 1.45rem;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.ip-lock-info p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}

@@ -1,0 +1,78 @@
+/* css/ip-nodes.css */
+.node-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.node-item {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  min-height: 72px;
+}
+
+.node-item:hover {
+  border-color: #cbd5e1;
+  background-color: #f1f5f9;
+  transform: translateY(-1px);
+}
+
+.node-item-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.node-item-icon {
+  width: 32px;
+  height: 32px;
+  background-color: #e2e8f0;
+  color: var(--text-muted);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
+.node-item.active {
+  border-color: var(--brand-green-hover);
+  background-color: var(--brand-green-bg);
+}
+
+.node-item.active .node-item-icon {
+  background-color: var(--brand-green-hover);
+  color: var(--brand-green);
+}
+
+/* Inherit font to match the rest of the application */
+.node-ip-text {
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+
+.node-item.active .node-ip-text {
+  font-weight: 700;
+  color: var(--brand-green);
+}
+
+.node-status-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.node-item.active .node-status-desc {
+  color: var(--brand-green);
+  font-weight: 500;
+}
