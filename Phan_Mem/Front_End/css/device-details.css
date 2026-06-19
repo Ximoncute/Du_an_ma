@@ -23,6 +23,11 @@
   color: var(--orange-accent);
 }
 
+.device-card[data-device-id="light_living"].active .device-icon-wrapper {
+  background-color: var(--yellow-accent-bg);
+  color: var(--yellow-accent);
+}
+
 .device-details {
   display: flex;
   flex-direction: column;

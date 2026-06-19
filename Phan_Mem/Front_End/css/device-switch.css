@@ -42,8 +42,16 @@ input:checked + .slider {
   background-color: var(--brand-green-accent);
 }
 
+#toggle-light_living:checked + .slider {
+  background-color: var(--yellow-accent);
+}
+
 input:focus + .slider {
   box-shadow: 0 0 1px var(--brand-green-accent);
+}
+
+#toggle-light_living:focus + .slider {
+  box-shadow: 0 0 1px var(--yellow-accent);
 }
 
 input:checked + .slider:before {
