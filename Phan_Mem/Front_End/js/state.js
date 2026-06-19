@@ -39,5 +39,12 @@ export const state = {
     tempThreshold: parseFloat(localStorage.getItem('settingsTempThreshold')) || 38,
     lightThreshold: parseFloat(localStorage.getItem('settingsLightThreshold')) || 800
   },
+  profile: {
+    avatar: localStorage.getItem('profile_avatar') || '',
+    fullName: localStorage.getItem('profile_fullName') || 'Nguyễn Văn A',
+    dob: localStorage.getItem('profile_dob') || '1998-01-01',
+    phone: localStorage.getItem('profile_phone') || '0987654321',
+    email: localStorage.getItem('profile_email') || 'nguyenvana@gmail.com'
+  },
   lcdText: ''
 };

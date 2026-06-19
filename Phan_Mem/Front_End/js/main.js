@@ -5,6 +5,8 @@ import { injectTemplates } from './templates.js';
 import { updateDateTime } from './utils.js';
 import { initAuthentication } from './auth-init.js';
 import { initSettingsManager } from './settings.js';
+import { initProfileManager } from './profile.js';
+import { initSupportChat } from './support.js';
 import { initDeviceControls } from './devices-init.js';
 import { updateDeviceOnlineCount } from './devices-state.js';
 import { initSerialMonitor } from './serial.js';
@@ -22,6 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initAuthentication();
   initSettingsManager();
+  initProfileManager();
+  initSupportChat();
   initTabNavigation();
   initSidebarCollapse();
   initDeviceControls();

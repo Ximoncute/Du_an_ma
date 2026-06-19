@@ -11,6 +11,8 @@ import { dashboardSerialTemplate } from './templates/dashboard-serial.js';
 import { devicesListTemplate } from './templates/devices-list.js';
 import { ipRegistryTemplate } from './templates/ip-registry.js';
 import { settingsTemplate } from './templates/settings.js';
+import { profileTemplate } from './templates/profile.js';
+import { supportTemplate } from './templates/support.js';
 import { cameraModalTemplate } from './templates/camera-modal.js';
 
 export function injectTemplates() {
@@ -43,6 +45,12 @@ export function injectTemplates() {
         </section>
         <section class="tab-content" id="tab-settings">
           ${settingsTemplate}
+        </section>
+        <section class="tab-content" id="tab-profile">
+          ${profileTemplate}
+        </section>
+        <section class="tab-content" id="tab-support">
+          ${supportTemplate}
         </section>
       </main>
     </div>
