@@ -120,33 +120,57 @@ export function connectToEspMqtt(ip, onSuccess, onFailure) {
         // Đồng bộ trạng thái thiết bị Đèn
         if (data.hasOwnProperty('light_state')) {
           const lActive = !!data.light_state;
-          state.devices.light_living.active = lActive;
-          state.devices.light_living.stateText = lActive ? 'Đang bật' : 'Đã tắt';
-          if (el.toggleLightLiving) el.toggleLightLiving.checked = lActive;
-
-          const card = document.querySelector(`.device-card[data-device-id="light_living"]`);
-          if (card) {
-            if (lActive) card.classList.add('active');
-            else card.classList.remove('active');
+          
+          if (state.devices.light_living.isPending) {
+            // Nếu trạng thái nhận về đã trùng khớp với trạng thái mong muốn từ UI, mở khóa sớm
+            if (lActive === el.toggleLightLiving.checked) {
+              state.devices.light_living.isPending = false;
+              clearTimeout(state.devices.light_living.pendingTimeout);
+            }
           }
-          const titleEl = document.getElementById('state-title-light_living');
-          if (titleEl) titleEl.textContent = state.devices.light_living.stateText;
+
+          // Chỉ cập nhật UI nếu không ở trạng thái khóa pending
+          if (!state.devices.light_living.isPending) {
+            state.devices.light_living.active = lActive;
+            state.devices.light_living.stateText = lActive ? 'Đang bật' : 'Đã tắt';
+            if (el.toggleLightLiving) el.toggleLightLiving.checked = lActive;
+
+            const card = document.querySelector(`.device-card[data-device-id="light_living"]`);
+            if (card) {
+              if (lActive) card.classList.add('active');
+              else card.classList.remove('active');
+            }
+            const titleEl = document.getElementById('state-title-light_living');
+            if (titleEl) titleEl.textContent = state.devices.light_living.stateText;
+          }
         }
 
         // Đồng bộ trạng thái thiết bị Cửa
         if (data.hasOwnProperty('door_state')) {
           const dActive = !!data.door_state;
-          state.devices.door_hallway.active = dActive;
-          state.devices.door_hallway.stateText = dActive ? 'Đã mở' : 'Đã đóng';
-          if (el.toggleDoorHallway) el.toggleDoorHallway.checked = dActive;
 
-          const card = document.querySelector(`.device-card[data-device-id="door_hallway"]`);
-          if (card) {
-            if (dActive) card.classList.add('active');
-            else card.classList.remove('active');
+          if (state.devices.door_hallway.isPending) {
+            // Nếu trạng thái nhận về đã trùng khớp với trạng thái mong muốn từ UI, mở khóa sớm
+            if (dActive === el.toggleDoorHallway.checked) {
+              state.devices.door_hallway.isPending = false;
+              clearTimeout(state.devices.door_hallway.pendingTimeout);
+            }
           }
-          const titleEl = document.getElementById('state-title-door_hallway');
-          if (titleEl) titleEl.textContent = state.devices.door_hallway.stateText;
+
+          // Chỉ cập nhật UI nếu không ở trạng thái khóa pending
+          if (!state.devices.door_hallway.isPending) {
+            state.devices.door_hallway.active = dActive;
+            state.devices.door_hallway.stateText = dActive ? 'Đã mở' : 'Đã đóng';
+            if (el.toggleDoorHallway) el.toggleDoorHallway.checked = dActive;
+
+            const card = document.querySelector(`.device-card[data-device-id="door_hallway"]`);
+            if (card) {
+              if (dActive) card.classList.add('active');
+              else card.classList.remove('active');
+            }
+            const titleEl = document.getElementById('state-title-door_hallway');
+            if (titleEl) titleEl.textContent = state.devices.door_hallway.stateText;
+          }
         }
 
         // Cập nhật biểu đồ và hiển thị số liệu thực

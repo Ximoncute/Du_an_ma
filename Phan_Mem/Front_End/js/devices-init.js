@@ -11,6 +11,13 @@ export function initDeviceControls() {
       setDeviceActiveState('light_living', checked);
       logSerial(`[Lệnh] Đèn thông minh phòng khách -> ${checked ? 'BẬT' : 'TẮT'}`);
       
+      // Khóa trạng thái đồng bộ nhận về từ MQTT để tránh việc nút bị nhảy lại trong thời gian chờ thiết bị xử lý
+      state.devices.light_living.isPending = true;
+      clearTimeout(state.devices.light_living.pendingTimeout);
+      state.devices.light_living.pendingTimeout = setTimeout(() => {
+        state.devices.light_living.isPending = false;
+      }, 3000); // Tối đa 3 giây
+      
       // Gửi lệnh MQTT tới ESP32
       if (state.connection.mqttClient && state.connection.mqttConnected && state.connection.activeIp) {
         const cleanIp = state.connection.activeIp.replace(/\./g, '_');
@@ -25,6 +32,13 @@ export function initDeviceControls() {
       const checked = e.target.checked;
       setDeviceActiveState('door_hallway', checked);
       logSerial(`[Lệnh] Cửa thông minh hành lang -> ${checked ? 'MỞ KHÓA' : 'KHÓA CỬA'}`);
+      
+      // Khóa trạng thái đồng bộ nhận về từ MQTT để tránh việc nút bị nhảy lại trong thời gian chờ thiết bị xử lý
+      state.devices.door_hallway.isPending = true;
+      clearTimeout(state.devices.door_hallway.pendingTimeout);
+      state.devices.door_hallway.pendingTimeout = setTimeout(() => {
+        state.devices.door_hallway.isPending = false;
+      }, 3000); // Tối đa 3 giây
       
       // Gửi lệnh MQTT tới ESP32
       if (state.connection.mqttClient && state.connection.mqttConnected && state.connection.activeIp) {
