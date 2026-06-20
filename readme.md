@@ -68,8 +68,9 @@ Phan_Mem/Front_End/
 5. Khi khởi động lần đầu, thiết bị sẽ phát ra một điểm truy cập WiFi. Dùng điện thoại kết nối vào đó để cấu hình WiFi nhà bạn cho ESP32.
 
 ### 2. Chạy Giao Diện Phần Mềm (Front-End)
-# Đang update
-
+```
+ Đang update
+```
 ### 3. Kết Nối Phần Mềm & Phần Cứng
 1. Lấy **địa chỉ IP** của ESP32 hiển thị trên màn hình OLED (hoặc qua log Serial).
 2. Nhấn vào nút **Trải Nghiệm Ngay** trên Landing Page để chuyển sang Dashboard.
