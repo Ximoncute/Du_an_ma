@@ -37,6 +37,15 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
+    // Append global leaves container to body to avoid clipping by overflow: hidden sections
+    let globalLeaves = document.getElementById('globalLeaves');
+    if (!globalLeaves) {
+        globalLeaves = document.createElement('div');
+        globalLeaves.className = 'leaves-container';
+        globalLeaves.id = 'globalLeaves';
+        document.body.appendChild(globalLeaves);
+    }
+
     initLandingPageLogic();
 });
 
@@ -200,4 +209,44 @@ function initLandingPageLogic() {
             }
         });
     });
+
+    /* ============================================
+       7. FALLING LEAVES EFFECT
+       ============================================ */
+    function createLeaves(containerId, count) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        const variants = ['leaf--v1', 'leaf--v2', 'leaf--v3'];
+        const animations = ['leafFall', 'leafFallAlt'];
+
+        for (let i = 0; i < count; i++) {
+            const leaf = document.createElement('span');
+            const variant = variants[Math.floor(Math.random() * variants.length)];
+            const anim = animations[Math.floor(Math.random() * animations.length)];
+            const isGlow = Math.random() < 0.2; // 20% chance to glow
+
+            leaf.className = `leaf ${variant}${isGlow ? ' leaf--glow' : ''}`;
+
+            // Randomize horizontal position across full width
+            const leftPos = Math.random() * 100;
+            // Randomize animation duration between 8s and 16s
+            const duration = 8 + Math.random() * 8;
+            // Randomize start delay so leaves don't all appear at once
+            const delay = Math.random() * 5;
+            // Slight random scale variation
+            const scale = 0.7 + Math.random() * 0.6;
+
+            leaf.style.cssText = `
+                left: ${leftPos}%;
+                animation: ${anim} ${duration}s linear ${delay}s infinite;
+                --leaf-scale: ${scale};
+            `;
+
+            container.appendChild(leaf);
+        }
+    }
+
+    // Generate 25 leaves globally across the page viewport
+    createLeaves('globalLeaves', 25);
 }

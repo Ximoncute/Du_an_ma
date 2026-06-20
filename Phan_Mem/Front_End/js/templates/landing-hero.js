@@ -14,7 +14,7 @@ export const heroTemplate = `
                     Biến Ngôi Nhà Của Bạn Thành <span class="highlight">Hệ Sinh Thái Thông Minh</span>
                 </h1>
                 <p class="hero-desc">
-                    Điều khiển mọi thiết bị trong nhà từ bất kỳ đâu. Tiết kiệm điện năng, nâng cao an ninh và tận hưởng
+                    Điều khiển mọi thiết bị trong nhà từ bất kỳ nơi đâu. Tiết kiệm điện năng, nâng cao an ninh và tận hưởng
                     cuộc sống hiện đại với SmartHome IoT.
                 </p>
                 <div class="hero-btns">

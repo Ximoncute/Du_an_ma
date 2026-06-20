@@ -1880,6 +1880,163 @@
         }
 
         /* ============================================
+       FALLING LEAVES EFFECT
+        ============================================ */
+        .leaves-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        .leaf {
+            position: absolute;
+            display: block;
+            top: -60px;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        /* Leaf shape variant 1 — classic teardrop leaf */
+        .leaf--v1 {
+            width: 24px;
+            height: 30px;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.7), rgba(74, 222, 128, 0.35));
+            border-radius: 2px 80% 2px 80%;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.25);
+        }
+
+        /* Leaf shape variant 2 — round petal */
+        .leaf--v2 {
+            width: 18px;
+            height: 24px;
+            background: linear-gradient(160deg, rgba(74, 222, 128, 0.65), rgba(22, 163, 74, 0.3));
+            border-radius: 50% 0 50% 0;
+            box-shadow: 0 0 8px rgba(74, 222, 128, 0.2);
+        }
+
+        /* Leaf shape variant 3 — elongated slim leaf */
+        .leaf--v3 {
+            width: 12px;
+            height: 30px;
+            background: linear-gradient(145deg, rgba(34, 197, 94, 0.6), rgba(74, 222, 128, 0.25));
+            border-radius: 40% 80% 40% 80%;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.18);
+        }
+
+        /* CTA section uses lighter / brighter tints against the dark bg */
+        .cta-section .leaf--v1 {
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.65), rgba(34, 197, 94, 0.35));
+            box-shadow: 0 0 15px rgba(74, 222, 128, 0.3);
+        }
+
+        .cta-section .leaf--v2 {
+            background: linear-gradient(160deg, rgba(74, 222, 128, 0.7), rgba(34, 197, 94, 0.3));
+            box-shadow: 0 0 12px rgba(74, 222, 128, 0.25);
+        }
+
+        .cta-section .leaf--v3 {
+            background: linear-gradient(145deg, rgba(74, 222, 128, 0.6), rgba(34, 197, 94, 0.25));
+            box-shadow: 0 0 15px rgba(74, 222, 128, 0.25);
+        }
+
+        /* Primary animation — fall + sway + 3D flip */
+        @keyframes leafFall {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg) rotateY(0deg) scale(calc(0.6 * var(--leaf-scale, 1)));
+                opacity: 0;
+            }
+            8% {
+                opacity: 0.9;
+                transform: translateY(8vh) translateX(15px) rotate(25deg) rotateY(30deg) scale(var(--leaf-scale, 1));
+            }
+            25% {
+                transform: translateY(25vh) translateX(-20px) rotate(90deg) rotateY(80deg) scale(var(--leaf-scale, 1));
+            }
+            50% {
+                transform: translateY(50vh) translateX(30px) rotate(180deg) rotateY(160deg) scale(calc(0.95 * var(--leaf-scale, 1)));
+                opacity: 0.7;
+            }
+            75% {
+                transform: translateY(75vh) translateX(-15px) rotate(270deg) rotateY(240deg) scale(calc(0.9 * var(--leaf-scale, 1)));
+            }
+            92% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(110vh) translateX(40px) rotate(360deg) rotateY(360deg) scale(calc(0.7 * var(--leaf-scale, 1)));
+                opacity: 0;
+            }
+        }
+
+        /* Alternate sway direction for variety */
+        @keyframes leafFallAlt {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg) rotateY(0deg) scale(calc(0.5 * var(--leaf-scale, 1)));
+                opacity: 0;
+            }
+            8% {
+                opacity: 0.85;
+                transform: translateY(8vh) translateX(-18px) rotate(-20deg) rotateY(-25deg) scale(var(--leaf-scale, 1));
+            }
+            25% {
+                transform: translateY(25vh) translateX(25px) rotate(-80deg) rotateY(-90deg) scale(var(--leaf-scale, 1));
+            }
+            50% {
+                transform: translateY(50vh) translateX(-35px) rotate(-170deg) rotateY(-180deg) scale(calc(0.92 * var(--leaf-scale, 1)));
+                opacity: 0.65;
+            }
+            75% {
+                transform: translateY(75vh) translateX(20px) rotate(-260deg) rotateY(-270deg) scale(calc(0.85 * var(--leaf-scale, 1)));
+            }
+            92% {
+                opacity: 0.45;
+            }
+            100% {
+                transform: translateY(110vh) translateX(-30px) rotate(-360deg) rotateY(-360deg) scale(calc(0.65 * var(--leaf-scale, 1)));
+                opacity: 0;
+            }
+        }
+
+        /* Subtle glow pulse for a few "special" leaves */
+        @keyframes leafGlow {
+            0%, 100% {
+                filter: brightness(1);
+            }
+            50% {
+                filter: brightness(1.4);
+            }
+        }
+
+        .leaf--glow {
+            animation-name: leafFall, leafGlow !important;
+        }
+
+        /* Responsive — fewer or no leaves on smaller screens */
+        @media (max-width: 768px) {
+            .leaf:nth-child(n+8) {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .leaf:nth-child(n+5) {
+                display: none;
+            }
+        }
+
+        /* Respect user preference for reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .leaf {
+                display: none !important;
+            }
+        }
+
+        /* ============================================
        SCROLLBAR
        ============================================ */
         ::-webkit-scrollbar {
