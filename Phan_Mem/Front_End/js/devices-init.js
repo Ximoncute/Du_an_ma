@@ -10,6 +10,13 @@ export function initDeviceControls() {
       const checked = e.target.checked;
       setDeviceActiveState('light_living', checked);
       logSerial(`[Lệnh] Đèn thông minh phòng khách -> ${checked ? 'BẬT' : 'TẮT'}`);
+      
+      // Gửi lệnh MQTT tới ESP32
+      if (state.connection.mqttClient && state.connection.mqttConnected && state.connection.activeIp) {
+        const cleanIp = state.connection.activeIp.replace(/\./g, '_');
+        const controlTopic = `iot_ung_dung/team_2/control/${cleanIp}`;
+        state.connection.mqttClient.publish(controlTopic, JSON.stringify({ command: 'light', state: checked }));
+      }
     });
   }
 
@@ -18,6 +25,14 @@ export function initDeviceControls() {
       const checked = e.target.checked;
       setDeviceActiveState('door_hallway', checked);
       logSerial(`[Lệnh] Cửa thông minh hành lang -> ${checked ? 'MỞ KHÓA' : 'KHÓA CỬA'}`);
+      
+      // Gửi lệnh MQTT tới ESP32
+      if (state.connection.mqttClient && state.connection.mqttConnected && state.connection.activeIp) {
+        const cleanIp = state.connection.activeIp.replace(/\./g, '_');
+        const controlTopic = `iot_ung_dung/team_2/control/${cleanIp}`;
+        state.connection.mqttClient.publish(controlTopic, JSON.stringify({ command: 'door', state: checked }));
+      }
+
       if (checked) {
         setTimeout(() => state.devices.door_hallway.active && triggerDoorWarning(true), 5000);
       } else {

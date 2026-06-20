@@ -8,7 +8,9 @@ export const state = {
   connection: {
     connected: true,
     activeIp: null, // Always require IP connection on page load
-    registeredIps: JSON.parse(localStorage.getItem('registeredIps')) || ['192.168.1.100']
+    registeredIps: JSON.parse(localStorage.getItem('registeredIps')) || [],
+    mqttClient: null,
+    mqttConnected: false
   },
   devices: {
     light_living: { name: 'Đèn thông minh', room: 'Phòng khách', status: 'online', active: true, stateText: 'Đang bật', time: '10 giây trước' },
@@ -37,6 +39,7 @@ export const state = {
   },
   settings: {
     tempThreshold: parseFloat(localStorage.getItem('settingsTempThreshold')) || 38,
+    humidThreshold: parseFloat(localStorage.getItem('settingsHumidThreshold')) || 70,
     lightThreshold: parseFloat(localStorage.getItem('settingsLightThreshold')) || 800
   },
   profile: {

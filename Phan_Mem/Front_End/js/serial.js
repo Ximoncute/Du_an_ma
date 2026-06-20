@@ -78,6 +78,13 @@ function handleSerialSend() {
       if (el.toggleLightLiving) el.toggleLightLiving.checked = active;
       setDeviceActiveState('light_living', active);
       logSerial(`[ESP32] ACK: Đã thực thi ${active ? 'BẬT' : 'TẮT'} đèn phòng khách.`);
+
+      // Gửi lệnh qua MQTT
+      if (state.connection.mqttClient && state.connection.mqttConnected && state.connection.activeIp) {
+        const cleanIp = state.connection.activeIp.replace(/\./g, '_');
+        const controlTopic = `iot_ung_dung/team_2/control/${cleanIp}`;
+        state.connection.mqttClient.publish(controlTopic, JSON.stringify({ command: 'light', state: active }));
+      }
     } else if (cmd === 'GET_TEMP') {
       logSerial(`[ESP32] Cảm biến DHT11: Nhiệt độ = ${state.sensors.temp.toFixed(1)}°C.`);
     } else if (cmd === 'GET_IP') {
@@ -90,6 +97,13 @@ function handleSerialSend() {
     } else {
       state.lcdText = rawVal;
       logSerial(`[ESP32] Đã nhận và hiển thị OLED : "${rawVal}"`);
+
+      // Gửi nội dung văn bản để hiển thị lên OLED của ESP32 qua MQTT
+      if (state.connection.mqttClient && state.connection.mqttConnected && state.connection.activeIp) {
+        const cleanIp = state.connection.activeIp.replace(/\./g, '_');
+        const controlTopic = `iot_ung_dung/team_2/control/${cleanIp}`;
+        state.connection.mqttClient.publish(controlTopic, JSON.stringify({ command: 'lcd', text: rawVal }));
+      }
     }
   }, 400);
 }

@@ -54,7 +54,16 @@ export function initAuthentication() {
         if (el.authOverlay) el.authOverlay.style.display = 'none';
         if (el.appContainer) el.appContainer.style.display = 'flex';
         hideAuthMessages(); el.loginForm.reset();
-        checkWorkspaceLock(); initSensorCharts();
+        
+        // Tự động kết nối MQTT nếu có IP lưu sẵn
+        const savedIp = localStorage.getItem('activeIp');
+        if (savedIp) {
+          import('./ip-connection.js').then(({ switchActiveNodeIp }) => {
+            switchActiveNodeIp(savedIp);
+          });
+        } else {
+          checkWorkspaceLock(); initSensorCharts();
+        }
         logSerial(`[Hệ thống] Người dùng "${username}" đã đăng nhập thành công.`, false, true);
       } else if (el.loginError) el.loginError.style.display = 'flex';
     });

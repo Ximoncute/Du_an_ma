@@ -37,7 +37,14 @@ document.addEventListener('DOMContentLoaded', () => {
   updateDeviceOnlineCount();
 
   const savedIp = localStorage.getItem('activeIp');
-  if (savedIp && el.ipLockInput) el.ipLockInput.value = savedIp;
+  if (savedIp && el.ipLockInput) {
+    el.ipLockInput.value = savedIp;
+    if (state.auth.currentUser) {
+      import('./ip-connection.js').then(({ switchActiveNodeIp }) => {
+        switchActiveNodeIp(savedIp);
+      });
+    }
+  }
 });
 
 function initTabNavigation() {

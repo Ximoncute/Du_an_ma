@@ -98,6 +98,7 @@ export function initDomSelectors() {
   el.settingsGatewayIp = $('settingsGatewayIp');
   el.btnSaveGatewayIp = $('btnSaveGatewayIp');
   el.settingsTempThreshold = $('settingsTempThreshold');
+  el.settingsHumidThreshold = $('settingsHumidThreshold');
   el.settingsLightThreshold = $('settingsLightThreshold');
   el.settingsCameraMode = $('settingsCameraMode');
 

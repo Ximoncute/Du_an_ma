@@ -14,9 +14,11 @@ export const dashboardSerialTemplate = `
     </div>
 
     <div class="serial-terminal" id="serialTerminal">
-      <div class="terminal-line">
+      <div class="terminal-line" id="placeholderLine">
         <span class="terminal-time">[--:--:--]</span>
         <span class="terminal-msg">Đang chờ dữ liệu từ thiết bị...</span>
+      </div>
+      <div class="terminal-line" id="cursorLine">
         <span class="terminal-cursor" id="terminalCursor"></span>
       </div>
     </div>

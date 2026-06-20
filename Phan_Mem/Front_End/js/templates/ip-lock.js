@@ -14,7 +14,7 @@ export const ipLockTemplate = `
       <div class="ip-lock-form" id="ipLockFormBlock">
         <div class="ip-lock-input-group">
           <label class="ip-lock-label" for="ipLockInput">ĐỊA CHỈ IP ESP32</label>
-          <input type="text" class="ip-lock-input" id="ipLockInput" value="192.168.1.100" placeholder="ví dụ: 192.168.1.100">
+          <input type="text" class="ip-lock-input" id="ipLockInput" value="" placeholder="ví dụ: 192.168.1.68">
         </div>
         <button class="btn-ip-connect" id="btnIpConnect">
           <i class="fa-solid fa-link"></i>

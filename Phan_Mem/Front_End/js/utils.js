@@ -25,6 +25,11 @@ export function logSerial(msg, isError = false, isSystem = false, type = '') {
   const term = el.serialTerminal;
   if (!term) return;
 
+  const placeholder = document.getElementById('placeholderLine');
+  if (placeholder) {
+    placeholder.remove();
+  }
+
   const now = new Date();
   const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
 

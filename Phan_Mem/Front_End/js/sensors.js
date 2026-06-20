@@ -8,6 +8,7 @@ import { drawFallbackCharts } from './charts-fallback.js';
 export function startSensorFluctuations() {
   setInterval(() => {
     if (!state.connection.activeIp) return;
+    if (state.connection.mqttConnected) return; // Không tự tạo dữ liệu giả lập khi đã kết nối phần cứng thực tế
 
     const tempDelta = (Math.random() - 0.5) * 0.2;
     state.sensors.temp = Math.max(15, Math.min(45, state.sensors.temp + tempDelta));

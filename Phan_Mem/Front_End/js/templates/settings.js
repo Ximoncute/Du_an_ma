@@ -27,6 +27,15 @@ export const settingsTemplate = `
     </div>
 
     <div class="settings-group">
+      <span class="settings-label">Ngưỡng cảnh báo độ ẩm</span>
+      <span class="settings-description">Hệ thống sẽ mở cửa nếu độ ẩm vượt quá ngưỡng này.</span>
+      <div class="settings-input-group">
+        <input type="number" class="serial-input" id="settingsHumidThreshold" value="70" style="max-width: 120px;">
+        <span style="align-self: center; font-weight: 500;">%</span>
+      </div>
+    </div>
+
+    <div class="settings-group">
       <span class="settings-label">Ngưỡng cảnh báo ánh sáng</span>
       <span class="settings-description">Hệ thống sẽ gửi cảnh báo nếu cường độ ánh sáng vượt quá ngưỡng này.</span>
       <div class="settings-input-group">
