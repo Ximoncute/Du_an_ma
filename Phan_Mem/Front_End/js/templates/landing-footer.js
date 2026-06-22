@@ -13,7 +13,7 @@ export const footerTemplate = `
                         SmartHome IoT
                     </h3>
                     <p>Nền tảng quản lý và giám sát nhà thông minh hàng đầu. Điều khiển thiết bị, tiết kiệm năng lượng,
-                        nâng cao an ninh từ xa.</p>
+                        nâng cao an ninh từ&nbsp;xa.</p>
                     <div class="footer-socials">
                         <a href="#" class="footer-social-link" aria-label="Facebook">
                             <svg viewBox="0 0 24 24">
@@ -61,9 +61,9 @@ export const footerTemplate = `
 
                 <div class="footer-col">
                     <h4>Liên hệ</h4>
-                    <a href="mailto:contact@smarthome.io">📧 contact@smarthome.io</a>
-                    <a href="tel:+84123456789">📞 (+84) 123 456 789</a>
-                    <a href="#">📍 Hà Nội, Việt Nam</a>
+                    <a href="mailto:ximoncute147@gmail.com">📧 ximoncute147@gmail.com</a>
+                    <a href="tel:+84329675925">📞 (+84) 329675925</a>
+                    <a href="#">📍 150 Cầu Giấy, Hà Nội, Việt&nbsp;Nam</a>
                 </div>
             </div>
 

@@ -52,3 +52,71 @@
   font-size: 0.75rem;
   color: var(--text-muted);
 }
+
+.btn-mqtt-status {
+  width: 100%;
+  padding: 6px 10px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all var(--transition-fast);
+  background-color: var(--brand-green);
+  color: white;
+}
+
+.btn-mqtt-status:hover {
+  filter: brightness(0.9);
+  transform: translateY(-1px);
+}
+
+.btn-mqtt-status:active {
+  transform: translateY(0);
+}
+
+.btn-mqtt-status.disconnected {
+  background-color: #fca5a5;
+  color: white;
+}
+
+.btn-mqtt-status.connecting {
+  background-color: var(--yellow-accent);
+  color: white;
+  cursor: wait;
+}
+
+/* Collapsed Sidebar styles for connection and MQTT toggle button */
+.sidebar.collapsed #connectionStatusBlock {
+  padding: 8px 4px;
+  justify-content: center;
+}
+
+.sidebar.collapsed #connectionStatusBlock > div:first-child {
+  justify-content: center !important;
+}
+
+.sidebar.collapsed #connectionStatusBlock > div:last-child {
+  display: flex !important;
+  justify-content: center !important;
+  margin-top: 4px;
+  width: 100%;
+}
+
+.sidebar.collapsed .btn-mqtt-status {
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  max-width: 12px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  color: transparent !important;
+  overflow: hidden;
+  text-indent: -9999px;
+  margin: 0 auto;
+  border: 1px solid white;
+}
+

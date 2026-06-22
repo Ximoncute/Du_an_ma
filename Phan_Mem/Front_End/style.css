@@ -26,7 +26,7 @@
 @import url('css/auth-form.css');
 @import url('css/settings.css');
 @import url('css/profile.css');
-@import url('css/support.css');
+@import url('css/support.css?v=2');
 @import url('css/ip-lock.css');
 @import url('css/ip-lock-form.css');
 @import url('css/ip-registry.css');

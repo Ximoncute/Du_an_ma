@@ -47,11 +47,18 @@ export const sidebarTemplate = `
     </div>
     
     <div class="sidebar-footer">
-      <div class="connection-status">
-        <div class="status-dot pulse" id="connectionDot"></div>
-        <div class="status-info">
-          <span class="status-text" id="connectionText">Đã kết nối</span>
-          <span class="status-ip" id="connectionIp">192.168.1.100</span>
+      <div class="connection-status" id="connectionStatusBlock" style="flex-wrap: wrap; gap: 8px; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+          <div class="status-dot pulse" id="connectionDot"></div>
+          <div class="status-info">
+            <span class="status-text" id="connectionText">Đã kết nối</span>
+            <span class="status-ip" id="connectionIp">192.168.1.100</span>
+          </div>
+        </div>
+        <div style="width: 100%; display: flex; justify-content: flex-end; margin-top: 4px;">
+          <button id="btnMqttToggle" class="btn-mqtt-status disconnected" title="Nhấp để kết nối MQTT">
+            MQTT: OFF
+          </button>
         </div>
       </div>
       

@@ -24,7 +24,7 @@ export const dashboardTemplate = `
                     <div class="browser-dot dot-green"></div>
                     <div class="browser-title">SmartHome Dashboard Preview</div>
                 </div>
-                <img src="dashboard.png" alt="SmartHome Dashboard Mockup" class="dashboard-preview-img">
+                <img src="images/dashboard.png" alt="SmartHome Dashboard Mockup" class="dashboard-preview-img">
             </div>
         </div>
     </section>

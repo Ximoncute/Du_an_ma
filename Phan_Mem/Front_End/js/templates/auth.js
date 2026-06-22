@@ -3,7 +3,7 @@ export const authTemplate = `
   <div class="auth-overlay" id="authOverlay">
     <div class="auth-card">
       <div class="auth-left">
-        <img src="smarthome_illustration.png" alt="SmartHome Illustration" class="auth-img">
+        <img src="images/smarthome_illustration.png" alt="SmartHome Illustration" class="auth-img">
       </div>
       <div class="auth-right">
         <div class="auth-header">

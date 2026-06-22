@@ -26,6 +26,7 @@
 .metric-icon-box.orange { background-color: var(--orange-accent-bg); color: var(--orange-accent); }
 .metric-icon-box.blue { background-color: var(--active-blue-bg); color: var(--active-blue); }
 .metric-icon-box.yellow { background-color: var(--yellow-accent-bg); color: var(--yellow-accent); }
+.metric-icon-box.red { background-color: var(--alert-red-bg); color: var(--alert-red); }
 
 .metric-title { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
 

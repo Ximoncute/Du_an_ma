@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: 1fr 340px;
   gap: 32px;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* Chat Card Styling */
@@ -278,8 +278,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
   gap: 18px;
+  height: 520px !important;
+  box-sizing: border-box;
 }
 
 .card-icon-header {
@@ -384,6 +387,10 @@
   .support-container-wrapper {
     grid-template-columns: 1fr;
     gap: 24px;
+    align-items: stretch;
+  }
+  .callback-card {
+    height: auto;
   }
 }
 

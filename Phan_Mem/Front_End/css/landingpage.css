@@ -42,6 +42,7 @@
             background-color: var(--bg-white);
             line-height: 1.6;
             overflow-x: hidden;
+            text-wrap: pretty;
         }
 
         h1,
@@ -52,7 +53,8 @@
         h6 {
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 700;
-            line-height: 1.2;
+            line-height: 1.3;
+            text-wrap: balance;
         }
 
         a {
@@ -115,9 +117,10 @@
         .section-desc {
             font-size: 1.1rem;
             color: var(--secondary-text);
-            max-width: 640px;
+            max-width: 800px;
             margin: 0 auto;
             line-height: 1.8;
+            text-wrap: balance;
         }
 
         .btn {
@@ -1278,21 +1281,26 @@
             margin: 0 auto;
         }
 
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 28px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, var(--primary-green), var(--accent-green));
-        }
-
         .timeline-item {
             display: flex;
             gap: 24px;
             margin-bottom: 40px;
             position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 26.5px;
+            top: 56px;
+            bottom: -40px;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--primary-green), var(--accent-green));
+            opacity: 0.5;
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
         }
 
         .timeline-item:last-child {
@@ -1305,15 +1313,16 @@
             background: var(--light-green);
             border: 3px solid var(--primary-green);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: grid;
+            place-items: center;
             flex-shrink: 0;
             z-index: 1;
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 800;
             font-size: 1.1rem;
             color: var(--dark-green);
+            line-height: 1;
+            text-align: center;
         }
 
         .timeline-content {
@@ -1359,10 +1368,6 @@
             transition: var(--transition);
         }
 
-        .masonry-item:nth-child(1) {
-            grid-row: span 2;
-        }
-
         .masonry-item:hover {
             transform: translateY(-4px);
             box-shadow: var(--shadow-lg);
@@ -1376,11 +1381,6 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-        }
-
-        .masonry-item:nth-child(1) .masonry-img {
-            height: 100%;
-            min-height: 416px;
         }
 
         .masonry-img img {
@@ -1627,7 +1627,7 @@
 
         .footer-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
+            grid-template-columns: 2.5fr 1fr 1fr 1.5fr;
             gap: 48px;
             margin-bottom: 48px;
         }

@@ -47,6 +47,4 @@
   background-color: rgba(211, 47, 47, 0.1);
 }
 
-.node-item.active .btn-delete-node {
-  display: none;
-}
+

@@ -49,6 +49,15 @@
   background-color: var(--brand-green-accent);
 }
 
+.pill-status.offline {
+  background-color: var(--alert-red-bg);
+  color: var(--alert-red);
+}
+
+.pill-status.offline .status-dot {
+  background-color: var(--alert-red);
+}
+
 .header-time {
   font-size: 0.9rem;
   font-weight: 600;
