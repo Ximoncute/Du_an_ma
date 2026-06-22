@@ -97,4 +97,4 @@ Chúc bạn có những trải nghiệm tuyệt vời với **SmartHome IoT**! �
 ![alt text](assets/image.png)
 
 # Bản chạy thử cho quý khách xem
-<video controls src="IoT_small.mp4" title="Title"></video>
+assets/IoT_small.mp4
