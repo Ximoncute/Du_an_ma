@@ -57,12 +57,27 @@ export function renderRegisteredNodes() {
       deleteBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (confirm(`Bạn có chắc chắn muốn xóa địa chỉ IP ${ip} khỏi danh sách?`)) {
-          if (isActive) {
-            disconnectActiveDevice();
-          }
-          state.connection.registeredIps = state.connection.registeredIps.filter(item => item !== ip);
-          localStorage.setItem('registeredIps', JSON.stringify(state.connection.registeredIps));
-          renderRegisteredNodes();
+          const API_BASE = 'http://127.0.0.1:5000/api';
+          fetch(`${API_BASE}/devices/${ip}`, {
+            method: 'DELETE'
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              if (isActive) {
+                disconnectActiveDevice();
+              }
+              state.connection.registeredIps = state.connection.registeredIps.filter(item => item !== ip);
+              localStorage.setItem('registeredIps', JSON.stringify(state.connection.registeredIps));
+              renderRegisteredNodes();
+            } else {
+              alert(data.message || 'Không thể xóa IP khỏi Back-End');
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            alert('Lỗi: Không kết nối được tới server Back-End!');
+          });
         }
       });
       actionsWrapper.appendChild(deleteBtn);

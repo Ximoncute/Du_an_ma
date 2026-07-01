@@ -82,12 +82,9 @@ export function connectToEspMqtt(ip, onSuccess, onFailure) {
     state.connection.mqttConnected = true;
     updateMqttButtonState();
 
-    logSerial(`[MQTT Web] Đã kết nối thành công tới MQTT Broker EMQX.`, false, true);
-    logSerial(`[MQTT Web] Đang lắng nghe dữ liệu từ Topic: ${sensorTopic}...`, false, true);
-    
     client.subscribe(sensorTopic, (err) => {
       if (err) {
-        logSerial(`[Lỗi] Đăng ký nhận dữ liệu cảm biến thất bại: ${err.message}`, true);
+        console.error(`[Lỗi] Đăng ký nhận dữ liệu cảm biến thất bại: ${err.message}`);
       }
     });
 
@@ -117,19 +114,17 @@ export function connectToEspMqtt(ip, onSuccess, onFailure) {
         lightThreshold: state.settings.lightThreshold
       }));
 
-      logSerial(`[Hệ thống] Đồng bộ kết nối với IP: ${ip}. Đang chờ thiết bị truyền tải dữ liệu...`, false, true);
-      
-      // Tự động kết nối Serial Monitor
-      if (el.btnSerialConnect && !state.serial.connected) {
-        el.btnSerialConnect.click();
-      }
+      console.log(`[Hệ thống] Đồng bộ kết nối với IP: ${ip}. Đang chờ thiết bị truyền tải dữ liệu...`);
+
+      // Lấy lịch sử cảm biến từ Backend
+      fetchHistoryFromBackend(ip);
 
       onSuccess();
     }
   });
 
   client.on('reconnect', () => {
-    logSerial(`[MQTT Web] Mất kết nối. Đang thử kết nối lại tới Broker...`, false, false);
+    console.log(`[MQTT Web] Mất kết nối. Đang thử kết nối lại tới Broker...`);
   });
 
   client.on('offline', () => {
@@ -162,42 +157,39 @@ export function connectToEspMqtt(ip, onSuccess, onFailure) {
         const tempVal = parseFloat(data.temp) || 0;
         const humidVal = parseFloat(data.humid) || 0;
         const lightVal = parseFloat(data.light) || 0;
-        const hasRealData = (tempVal !== 0 || humidVal !== 0 || lightVal !== 0);
 
-        if (hasRealData) {
-          // Cảm biến đang hoạt động -> chuyển trạng thái sang online
-          if (!state.connection.deviceOnline) {
-            state.connection.deviceOnline = true;
-            updateAllDevicesOnlineStatus(true);
-            updateMqttButtonState();
-          }
+        // Bất kỳ gói tin nào nhận được từ sensorTopic đều chứng minh thiết bị đang hoạt động (Online)
+        if (!state.connection.deviceOnline) {
+          state.connection.deviceOnline = true;
+          updateAllDevicesOnlineStatus(true);
+          updateMqttButtonState();
 
-          // Đặt lại Watchdog (10 giây)
-          if (state.connection.watchdogTimer) {
-            clearTimeout(state.connection.watchdogTimer);
-          }
-          state.connection.watchdogTimer = setTimeout(() => {
-            state.connection.deviceOnline = false;
-            updateAllDevicesOnlineStatus(false);
-            updateMqttButtonState();
-            state.sensors.temp = 0;
-            state.sensors.humid = 0;
-            state.sensors.light = 0;
-            updateMetricDisplays();
-            logSerial(`[Hệ thống] Mất tín hiệu dữ liệu từ cảm biến. Thiết bị chuyển sang Ngoại tuyến.`, true);
-          }, 10000);
-        } else {
-          // Trạng thái 0 (tất cả chỉ số = 0) thì xem như mất kết nối / không online
-          if (state.connection.deviceOnline) {
-            state.connection.deviceOnline = false;
-            updateAllDevicesOnlineStatus(false);
-            updateMqttButtonState();
-            if (state.connection.watchdogTimer) {
-              clearTimeout(state.connection.watchdogTimer);
-              state.connection.watchdogTimer = null;
-            }
+          // Tự động kết nối Serial Monitor khi thiết bị online
+          if (el.btnSerialConnect && !state.serial.connected) {
+            el.btnSerialConnect.click();
           }
         }
+
+        // Đặt lại Watchdog (30 giây) để giám sát hoạt động liên tục
+        if (state.connection.watchdogTimer) {
+          clearTimeout(state.connection.watchdogTimer);
+        }
+        state.connection.watchdogTimer = setTimeout(() => {
+          state.connection.deviceOnline = false;
+          updateAllDevicesOnlineStatus(false);
+          updateMqttButtonState();
+          
+          // Khi mất kết nối tạm thời, chúng ta giữ nguyên giá trị cảm biến cuối cùng trên giao diện,
+          // KHÔNG đặt về 0 để tránh làm biểu đồ bị rơi thẳng xuống 0 (nhọn gãy) gây sai lệch dữ liệu trực quan.
+          
+          // Tự động ngắt Serial Monitor và thông báo
+          if (state.serial.connected && el.btnSerialConnect) {
+            el.btnSerialConnect.click();
+          }
+          if (el.serialTerminal) {
+            el.serialTerminal.innerHTML = '<div class="terminal-line" id="placeholderLine"><span class="terminal-msg system">Mất kết nối tới thiết bị (Watchdog Timeout)...</span></div><div class="terminal-cursor" id="terminalCursor">_</div>';
+          }
+        }, 30000);
 
         // Cập nhật dữ liệu cảm biến thực tế khi nhận được gói tin từ phần cứng
         state.sensors.temp = tempVal;
@@ -458,4 +450,65 @@ export function switchActiveNodeIp(ip) {
       checkWorkspaceLock();
     }
   );
+}
+
+function fetchHistoryFromBackend(ip) {
+  const API_BASE = 'http://127.0.0.1:5000/api';
+  console.log(`[Hệ thống] Đang tải lịch sử cảm biến cho thiết bị ${ip} từ MongoDB...`);
+  
+  fetch(`${API_BASE}/sensors/history?ip=${ip}&limit=8`)
+    .then(res => res.json())
+    .then(async (resData) => {
+      if (resData.success && resData.data && resData.data.length > 0) {
+        const { chartLabels, baseTempData, baseHumidData, baseLightData, tempChart, humidChart, lightChart, useFallbackCharts } = await import('../charts/charts-state.js');
+        const { drawFallbackCharts } = await import('../charts/charts-fallback.js');
+        
+        // Làm trống dữ liệu ban đầu
+        chartLabels.length = 0;
+        baseTempData.length = 0;
+        baseHumidData.length = 0;
+        baseLightData.length = 0;
+        
+        // Nạp dữ liệu lịch sử nhận được
+        resData.data.forEach(log => {
+          const timeStr = new Date(log.createdAt).toTimeString().split(' ')[0];
+          chartLabels.push(timeStr);
+          baseTempData.push(log.temp);
+          baseHumidData.push(log.humid);
+          baseLightData.push(log.light);
+        });
+        
+        // Cập nhật giá trị hiển thị tức thời theo log mới nhất
+        const latest = resData.data[resData.data.length - 1];
+        state.sensors.temp = latest.temp;
+        state.sensors.humid = latest.humid;
+        state.sensors.light = latest.light;
+        
+        if (el.valTemp) el.valTemp.textContent = state.sensors.temp.toFixed(1);
+        if (el.valHumid) el.valHumid.textContent = state.sensors.humid;
+        if (el.valLight) el.valLight.textContent = state.sensors.light;
+        if (el.chartValTemp) el.chartValTemp.textContent = `${state.sensors.temp.toFixed(1)} °C`;
+        if (el.chartValHumid) el.chartValHumid.textContent = `${state.sensors.humid} %`;
+        if (el.chartValLight) el.chartValLight.textContent = `${state.sensors.light} lux`;
+        
+        // Đặt thiết bị sang trạng thái online vì đã có dữ liệu
+        state.connection.deviceOnline = true;
+        updateAllDevicesOnlineStatus(true);
+        updateMqttButtonState();
+        
+        // Vẽ lại đồ thị
+        if (useFallbackCharts.val) {
+          drawFallbackCharts();
+        } else {
+          if (tempChart.val) tempChart.val.update('none');
+          if (humidChart.val) humidChart.val.update('none');
+          if (lightChart.val) lightChart.val.update('none');
+        }
+        
+        logSerial(`[Backend] Đã khôi phục thành công ${resData.data.length} điểm dữ liệu lịch sử từ MongoDB.`, false, true);
+      }
+    })
+    .catch(err => {
+      console.warn('[Cảnh báo] Lỗi kết nối API lịch sử cảm biến:', err);
+    });
 }

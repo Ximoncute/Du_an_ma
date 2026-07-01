@@ -8,6 +8,12 @@ export function initSerialMonitor() {
   if (el.btnSerialConnect) {
     el.btnSerialConnect.addEventListener('click', () => {
       if (!state.connection.activeIp) return;
+      
+      if (!state.connection.deviceOnline && !state.serial.connected) {
+        // Không cho phép kết nối nếu thiết bị chưa gửi dữ liệu
+        return;
+      }
+
       state.serial.connected = !state.serial.connected;
 
       if (state.serial.connected) {

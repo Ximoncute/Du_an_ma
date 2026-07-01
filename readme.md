@@ -36,41 +36,87 @@ Dự án sử dụng các linh kiện phần cứng sau:
 
 ## 💻 Chi Tiết Phần Mềm (Software)
 
-Mã nguồn phần mềm nằm tại thư mục: `Phan_Mem/Front_End/`. Được cấu trúc cực kỳ tối ưu và dễ bảo trì:
+Mã nguồn phần mềm được chia làm hai phần chính tại thư mục `Phan_Mem/`:
 
-```
-Phan_Mem/Front_End/
-├── css/
-│   ├── landingpage.css      # Toàn bộ CSS của Landing Page
-│   ├── auth.css, settings.css, ... # CSS cho các component Dashboard
-│   └── variables.css        # Khai báo màu sắc, font, shadow hệ thống
-├── js/
-│   ├── templates/           # Các file HTML Component được viết dưới dạng ES Module
-│   │   ├── landing-*.js     # Các phần của trang Landing Page (Hero, Features, FAQ...)
-│   │   └── *.js             # Các phần của trang Dashboard (Sidebar, Metrics, Terminal...)
-│   ├── landingpage.js       # File JavaScript điều phối của Landing Page
-│   ├── main.js              # File JavaScript khởi tạo Dashboard chính
-│   └── ip-connection.js     # Xử lý kết nối MQTT WebSockets tới ESP32 qua EMQX Broker
-├── ladingpage.html          # Trang giới thiệu (Landing Page) rút gọn (< 40 dòng)
-├── index.html               # Trang Dashboard chính của hệ thống
-└── style.css                # CSS tổng thể
-```
+### 1. Front-End (`Phan_Mem/Front_End/`)
+Được thiết kế theo phong cách hiện đại với giao diện Glassmorphism, Responsive hoàn toàn và sử dụng kiến trúc ES Modules (Vanilla JS & CSS).
+*   **`ladingpage.html`**: Trang giới thiệu dự án (Landing Page) siêu nhẹ (< 40 dòng), đóng vai trò điều hướng.
+*   **`index.html`**: Trang Dashboard chính hiển thị các biểu đồ, widget điều khiển thiết bị và terminal.
+*   **`css/`**: Chứa các file style modular hóa:
+    *   `variables.css`: Khai báo bảng màu HSL, typography (Outfit font) và thiết kế hệ thống.
+    *   `landingpage.css`: Toàn bộ giao diện động của Landing Page.
+    *   `metrics.css`, `devices-grid.css`, `serial-terminal.css`...: CSS riêng biệt cho từng thành phần trong Dashboard.
+*   **`js/`**:
+    *   `app/main.js`: File khởi tạo và phối hợp các module của Dashboard.
+    *   `app/landingpage.js`: Điều phối hiệu ứng và hành động trên trang Landing Page.
+    *   `templates/`: Các thành phần giao diện (UI Components) được viết dưới dạng hàm JavaScript ES Module xuất HTML trực tiếp.
+    *   `connection/`: Quản lý kết nối MQTT WebSockets từ trình duyệt tới broker công cộng và ESP32.
+
+### 2. Back-End API (`Phan_Mem/Back_End/`)
+Xây dựng trên nền tảng **Node.js** và **Express**, sử dụng database **MongoDB** làm nơi lưu trữ dữ liệu lịch sử cảm biến từ thiết bị.
+*   **`server.js`**: Điểm khởi chạy máy chủ Express và khởi chạy MQTT Listener.
+*   **`services/mqttListener.js`**: Lắng nghe liên tục topic `iot_ung_dung/team_2/sensor/#` từ MQTT Broker (`broker.emqx.io`), tự động đăng ký thiết bị mới vào database khi nhận bản tin đầu tiên và lưu trữ nhật ký cảm biến theo thời gian thực.
+*   **`routes/`**:
+    *   `auth.js`: Đăng ký, đăng nhập và xác thực người dùng sử dụng mã hóa `bcryptjs` và Token `JWT`.
+    *   `sensors.js`: Cung cấp API truy vấn lịch sử chỉ số cảm biến (`/api/sensors/history`) vẽ biểu đồ Chart.js và chỉ số mới nhất (`/api/sensors/latest`).
+    *   `devices.js`: API quản lý danh sách thiết bị thông minh kết nối vào mạng lưới.
+*   **`models/`**: Khai báo cấu trúc Schema (Mongoose) lưu trữ thông tin thiết bị (`Device`) và nhật ký cảm biến (`SensorLog`).
 
 ---
 
 ## 🚀 Hướng Dẫn Cài Đặt & Khởi Chạy
+
+### Yêu Cầu Hệ Thống
+*   Đã cài đặt **Node.js** (Phiên bản gợi ý: >= v16).
+*   Đã cài đặt và đang chạy dịch vụ **MongoDB** tại máy cục bộ (hoặc sử dụng URI kết nối Cloud MongoDB Atlas).
 
 ### 1. Nạp Code Phần Cứng (ESP32S3)
 1. Cài đặt extension **PlatformIO IDE** trên VS Code.
 2. Mở thư mục dự án phần cứng tại `Phan_Cung/IoT_Ung_Dung/`.
 3. Kết nối board **Seeed Studio XIAO ESP32S3** với máy tính qua cổng USB-C.
 4. Nhấn **Build** và **Upload** code từ thanh công cụ PlatformIO để nạp chương trình.
-5. Khi khởi động lần đầu, thiết bị sẽ phát ra một điểm truy cập WiFi. Dùng điện thoại kết nối vào đó để cấu hình WiFi nhà bạn cho ESP32.
+5. Khi khởi động lần đầu, thiết bị sẽ phát ra một điểm truy cập WiFi mang tên cấu hình. Sử dụng điện thoại/máy tính kết nối vào đó, một trang Captive Portal sẽ hiển thị để bạn cấu hình mạng WiFi và mật khẩu cho ESP32.
 
-### 2. Chạy Giao Diện Phần Mềm (Front-End)
-```
- Đang update
-```
+### 2. Khởi Chạy Hệ Thống Phần Mềm
+
+#### Cách 1: Khởi chạy nhanh bằng Script tự động (Khuyên Dùng)
+Nếu bạn đang chạy hệ điều hành Windows, dự án đã cung cấp một tệp tin Batch để khởi động toàn bộ dịch vụ chỉ bằng một cú click:
+1. Đảm bảo dịch vụ MongoDB cục bộ của bạn đã được khởi động ở cổng mặc định (`27017`).
+2. Mở thư mục `RUN/` và nhấp đúp vào tệp tin **`run.bat`**.
+3. Tệp script sẽ tự động mở hai cửa sổ dòng lệnh riêng biệt để chạy Back-End (`port 5000`) và Front-End (`port 3000`), sau đó tự động mở trình duyệt web hiển thị Landing Page.
+
+#### Cách 2: Khởi chạy thủ công từng phần
+
+*   **Bước 2.1: Cấu hình và chạy Back-End API**
+    1. Di chuyển vào thư mục backend:
+       ```bash
+       cd Phan_Mem/Back_End
+       ```
+    2. Cài đặt các thư viện phụ thuộc:
+       ```bash
+       npm install
+       ```
+    3. Tạo tệp `.env` trong thư mục `Phan_Mem/Back_End/` và điền cấu hình cơ bản sau:
+       ```env
+       PORT=5000
+       MONGO_URI=mongodb://localhost:27017/smarthome
+       MQTT_BROKER_URL=mqtt://broker.emqx.io:1883
+       JWT_SECRET=smarthome_super_secret_key_123
+       ```
+    4. Khởi chạy máy chủ:
+       - Chế độ Production: `npm start`
+       - Chế độ Development (tự tải lại khi lưu code): `npm run dev`
+
+*   **Bước 2.2: Khởi chạy Front-End**
+    1. Di chuyển vào thư mục frontend:
+       ```bash
+       cd Phan_Mem/Front_End
+       ```
+    2. Sử dụng trình chạy HTTP Server tĩnh bất kỳ (ví dụ như `http-server` của npm):
+       ```bash
+       npx http-server -p 3000
+       ```
+    3. Mở trình duyệt web của bạn và truy cập địa chỉ: `http://localhost:3000/ladingpage.html`.
 ### 3. Kết Nối Phần Mềm & Phần Cứng
 1. Lấy **địa chỉ IP** của ESP32 hiển thị trên màn hình OLED (hoặc qua log Serial).
 2. Nhấn vào nút **Trải Nghiệm Ngay** trên Landing Page để chuyển sang Dashboard.
@@ -79,9 +125,9 @@ Phan_Mem/Front_End/
 
 ---
 
-## 👥 Đội Ngũ Phát Triển (Team 2)
+## 👥 Đội Ngũ Phát Triển (Team Rách)
 
-Dự án được xây dựng và hoàn thiện bởi các thành viên **Team 2** thuộc môn học **IoT và Ứng Dụng**. 
+Dự án được xây dựng và hoàn thiện bởi các thành viên **Team Rách** thuộc môn học **IoT và Ứng Dụng**. 
 Chúc bạn có những trải nghiệm tuyệt vời với **SmartHome IoT**! 🏡⚡
 
 ## Trưởng đoàn : Lê Chí Hiếu - 0329675925

@@ -1,0 +1,24 @@
+{
+  "name": "smarthome-backend",
+  "version": "1.0.0",
+  "description": "SmartHome Backend with Express, MongoDB, and MQTT Listener",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.4.1",
+    "mqtt": "^5.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.2"
+  },
+  "author": "Team 2",
+  "license": "ISC"
+}
