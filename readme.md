@@ -80,10 +80,22 @@ Xây dựng trên nền tảng **Node.js** và **Express**, sử dụng database
 ### 2. Khởi Chạy Hệ Thống Phần Mềm
 
 #### Cách 1: Khởi chạy nhanh bằng Script tự động (Khuyên Dùng)
-Nếu bạn đang chạy hệ điều hành Windows, dự án đã cung cấp một tệp tin Batch để khởi động toàn bộ dịch vụ chỉ bằng một cú click:
-1. Đảm bảo dịch vụ MongoDB cục bộ của bạn đã được khởi động ở cổng mặc định (`27017`).
-2. Mở thư mục `RUN/` và nhấp đúp vào tệp tin **`run.bat`**.
-3. Tệp script sẽ tự động mở hai cửa sổ dòng lệnh riêng biệt để chạy Back-End (`port 5000`) và Front-End (`port 3000`), sau đó tự động mở trình duyệt web hiển thị Landing Page.
+Dự án cung cấp sẵn hai tệp tin kịch bản tự động để khởi chạy toàn bộ dịch vụ (Front-End & Back-End) nhanh chóng tùy thuộc vào hệ điều hành của bạn. Các script này **tự động kiểm tra và cài đặt dependencies (`npm install`)** cho Back-End nếu chưa có:
+
+*   **Đối với hệ điều hành Windows:**
+    1. Đảm bảo dịch vụ MongoDB cục bộ của bạn đã được khởi động ở cổng mặc định (`27017`).
+    2. Mở thư mục `RUN/` và nhấp đúp vào tệp tin **`run.bat`**.
+    3. Tệp script sẽ tự động kiểm tra thư mục `node_modules`, tự cài đặt thư viện cần thiết (nếu thiếu), mở các cửa sổ dòng lệnh riêng để khởi chạy Back-End (`port 5000`), Front-End (`port 3000`) và tự động mở trình duyệt web hiển thị Landing Page.
+
+*   **Đối với hệ điều hành macOS / Linux:**
+    1. Đảm bảo dịch vụ MongoDB cục bộ của bạn đã được khởi động ở cổng mặc định (`27017`).
+    2. Mở terminal tại thư mục gốc của dự án và chạy các lệnh sau để cấp quyền thực thi và khởi chạy script:
+       ```bash
+       chmod +x RUN/run.sh
+       ./RUN/run.sh
+       ```
+    3. Script sẽ tự động cài đặt các thư viện cần thiết (nếu thiếu), chạy ngầm Back-End API, Front-End và tự động mở trình duyệt web.
+    4. Để tắt toàn bộ hệ thống cùng lúc, bạn chỉ cần nhấn **`Ctrl + C`** trong cửa sổ terminal đang chạy script `run.sh` để tự dọn dẹp các cổng.
 
 #### Cách 2: Khởi chạy thủ công từng phần
 
